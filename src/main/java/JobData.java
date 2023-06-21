@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -99,9 +100,22 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> jobEntry : allJobs) {
+            for (Map.Entry<String, String> field : jobEntry.entrySet()) {
+                if (!jobs.contains(jobEntry)
+                        && field.getValue().toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(jobEntry);
+                }
+            }
+        }
+        return jobs;
     }
+
+        // TODO - implement this method (loops through array list - find value)
+
+
 
     /**
      * Read in data from a CSV file and store it in a list
