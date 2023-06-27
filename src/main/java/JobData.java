@@ -103,7 +103,7 @@ public class JobData {
         for (HashMap<String, String> job : allJobs) {
             for (String key : job.keySet()) {
                 String columnValue = job.get(key);
-                System.out.println("Comparing value '" + value.toLowerCase() + "' to value '" + columnValue.toLowerCase() + "' in column '" + key + "'");
+//                System.out.println("Comparing value '" + value.toLowerCase() + "' to value '" + columnValue.toLowerCase() + "' in column '" + key + "'");
                 if (columnValue.toLowerCase().contains(value.toLowerCase())) {
                     // Check if the job already exists in the foundJobs list
                     boolean jobExists = foundJobs.stream()
