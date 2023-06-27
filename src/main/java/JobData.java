@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by LaunchCode
  */
+
 public class JobData {
 
     private static final String DATA_FILE = "src/main/resources/job_data.csv";
@@ -25,7 +26,7 @@ public class JobData {
      * without duplicates, for a given column.
      *
      * @param field The column to retrieve values from
-     * @return List of all of the values of the given field
+     * @return List of all the values of the given field
      */
     public static ArrayList<String> findAll(String field) {
 
@@ -60,7 +61,6 @@ public class JobData {
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
-     *
      * For example, searching for employer "Enterprise" will include results
      * with "Enterprise Holdings, Inc".
      *
@@ -74,12 +74,11 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
-
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -87,19 +86,38 @@ public class JobData {
         return jobs;
     }
 
+
     /**
      * Search all columns for the given term
      *
      * @param value The search term to look for
      * @return      List of all jobs with at least one field containing the value
      */
-    public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
-        // load data, if not already loaded
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // Load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> foundJobs = new ArrayList<>();
+
+        for (HashMap<String, String> job : allJobs) {
+            for (String key : job.keySet()) {
+                String columnValue = job.get(key);
+//                System.out.println("Comparing value '" + value.toLowerCase() + "' to value '" + columnValue.toLowerCase() + "' in column '" + key + "'");
+                if (columnValue.toLowerCase().contains(value.toLowerCase())) {
+                    // Check if the job already exists in the foundJobs list
+                    boolean jobExists = foundJobs.stream()
+                            .anyMatch(existingJob -> existingJob.equals(job));
+
+                    if (!jobExists) {
+                        foundJobs.add(job);
+                    }
+                    break; // Move to the next job once a match is found in any column
+                }
+            }
+        }
+
+        return foundJobs;
     }
 
     /**
